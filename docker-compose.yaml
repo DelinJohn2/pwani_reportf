@@ -1,0 +1,18 @@
+
+
+services:
+  pwani_app:
+    build:
+      context: .
+      dockerfile: dockerfile   # your Dockerfile
+    container_name: pwani_report
+    ports:
+      - "8001:8001"            # map container port to host
+    volumes:
+                # mount project folder for live reload
+      - ./logs:/app/logs       # mount logs folder
+      - ./.env:/app/.env 
+      - ./data_bases:/app/data_bases 
+      - ./prompts:/app/prompts # mount your .env file
+
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload

@@ -1,0 +1,2 @@
+from .mt_intelligence_generator import intelligence_creator_mt
+from .gt_intelligence_generator import intelligence_maker_gt

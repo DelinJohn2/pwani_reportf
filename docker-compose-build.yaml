@@ -1,0 +1,10 @@
+
+
+services:
+  pwani_app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: pwani_report
+    ports:
+      - "8001:8001"
