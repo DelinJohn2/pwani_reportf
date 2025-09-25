@@ -18,3 +18,4 @@ seaborn
 sqlmodel
 pymysql
 langchain_anthropic
+tenacity
