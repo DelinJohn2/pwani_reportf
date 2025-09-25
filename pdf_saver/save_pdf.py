@@ -1,6 +1,6 @@
 from weasyprint import HTML
 import markdown
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 
 logger = setup_logger("PDFGenerator")
 

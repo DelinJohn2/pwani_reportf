@@ -3,7 +3,7 @@ from utils import prepare_dashboard_markdown_mt
 from data_fetcher import DataReaderMt
 from llm import load_llm_anthorpic
 from pdf_saver import markdown_to_pdf
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 logger = setup_logger("MTReportGenerator")
@@ -41,12 +41,12 @@ class MTReportGenerator:
             logger.exception("Failed to fetch MT base data")
             raise
 
-    def generate_territory_report(self, territory: str, brand: str, prompt_path: str = "prompts/mt/territory_report.md") -> bytes:
+    def generate_territory_report(self, territory: str, brand: str,category, prompt_path: str = "prompts/mt/territory_report.md") -> bytes:
         """Generate a PDF report for a given brand in a territory."""
         try:
             pwani_data, competitor_data = self._get_base_data()
 
-            result = intelligence_creator_mt(pwani_data, competitor_data, brand, territory)
+            result = intelligence_creator_mt(pwani_data, competitor_data, brand,category, territory)
             logger.info("MT intelligence generated for brand=%s, territory=%s", brand, territory)
 
             with open(prompt_path, "r", encoding="utf-8") as f:
@@ -66,12 +66,12 @@ class MTReportGenerator:
             logger.exception("Failed to generate MT territory report for brand=%s, territory=%s", brand, territory)
             raise
 
-    def generate_executive_summary(self, brand: str, prompt_path: str = "prompts/mt/executive_summary.md") -> bytes:
+    def generate_executive_summary(self, brand: str,category, prompt_path: str = "prompts/mt/executive_summary.md") -> bytes:
         """Generate an executive summary PDF with charts for a brand."""
         try:
             pwani_data, competitor_data = self._get_base_data()
 
-            result = intelligence_creator_mt(pwani_data, competitor_data, brand, territory="all")
+            result = intelligence_creator_mt(pwani_data, competitor_data, brand, category,territory="all")
             logger.info("MT executive summary intelligence generated for brand=%s", brand)
 
             with open(prompt_path, "r", encoding="utf-8") as f:

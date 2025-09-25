@@ -1,5 +1,5 @@
 import pandas as pd
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 
 
 logger = setup_logger("MtAnalysis")

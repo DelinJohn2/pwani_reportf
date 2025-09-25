@@ -1,12 +1,12 @@
 import pandas as pd
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 
 
 logger = setup_logger("IntelligenceMakerGT")
 
 
 
-def intelligence_maker_gt(rtm_data, gt_data, competitor_data, brand, territory, category ,threshold=0.05):
+def intelligence_maker_gt(rtm_data, gt_data, competitor_data, brand, category ,territory,threshold=0.05):
     try:
         logger.info("Generating intelligence for brand=%s, territory=%s", brand, territory)
 

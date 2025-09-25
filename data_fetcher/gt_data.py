@@ -2,7 +2,7 @@ import pandas as pd
 from config import load_engine
 from sqlmodel import create_engine
 
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 
 
 # --- DB Engine ---

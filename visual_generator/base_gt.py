@@ -2,7 +2,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 from .charts_gt import (
     create_market_share_chart, 
     create_territory_priority_matrix, 

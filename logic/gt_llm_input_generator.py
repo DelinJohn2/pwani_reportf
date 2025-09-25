@@ -6,7 +6,7 @@ from data_fetcher import DataReaderGT
 from data_intelligence import intelligence_maker_gt
 from llm import load_llm_anthorpic
 from pdf_saver import markdown_to_pdf
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 logger = setup_logger("LLMInputGenerator")
@@ -67,7 +67,7 @@ def invoke_llm_with_retry(llm, prompt):
     return result
 
 
-def llm_input_generator(territory: str, brand: str, prompt_path='prompts/gt/content_generation.md'):
+def llm_input_generator(territory: str, brand: str,category:str, prompt_path='prompts/gt/content_generation.md'):
     try:
         logger.info("Generating LLM input for brand=%s, territory=%s", brand, territory)
 
@@ -79,7 +79,7 @@ def llm_input_generator(territory: str, brand: str, prompt_path='prompts/gt/cont
         logger.info("Data fetched successfully for brand=%s, territory=%s", brand, territory)
 
         # --- Generate intelligence ---
-        intelligence = intelligence_maker_gt(rtm_data, gt_data_p, gt_data_comp, brand, territory)
+        intelligence = intelligence_maker_gt(rtm_data, gt_data_p, gt_data_comp, brand, territory,category)
         logger.info("Intelligence generated successfully")
 
         # --- Prepare prompt ---

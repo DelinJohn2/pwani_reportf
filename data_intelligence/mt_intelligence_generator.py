@@ -1,13 +1,13 @@
 import pandas as pd
 
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 
 from .mt_intelligence_processor import MtAnalysis
 
 logger = setup_logger("IntelligenceCreatorMT")
 
 
-def intelligence_creator_mt(pwani_df, comp_df, brand, territory,category):
+def intelligence_creator_mt(pwani_df, comp_df, brand,category, territory):
     try:
         logger.info("Generating MT intelligence for brand=%s, territory=%s", brand, territory)
 

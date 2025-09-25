@@ -3,7 +3,7 @@ from data_intelligence import intelligence_maker_gt
 from llm import load_llm_anthorpic
 from pdf_saver import markdown_to_pdf
 from utils import prepare_dashboard_gt
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 
@@ -16,7 +16,7 @@ def invoke_llm_with_retry(llm, prompt):
     return llm.invoke(prompt)
 
 
-def executive_report_generator(brand: str, prompt_path='prompts/gt/executive_summary.md'):
+def executive_report_generator(brand: str, category:str,prompt_path='prompts/gt/executive_summary.md'):
     try:
         logger.info("Starting executive report generation for brand=%s", brand)
 
@@ -28,7 +28,7 @@ def executive_report_generator(brand: str, prompt_path='prompts/gt/executive_sum
         logger.info("Data fetched successfully for brand=%s", brand)
 
         # --- Generate intelligence ---
-        intelligence = intelligence_maker_gt(rtm_data, gt_data_p, gt_data_comp, brand, territory='all')
+        intelligence = intelligence_maker_gt(rtm_data, gt_data_p, gt_data_comp, brand,category, territory='all')
         logger.info("Intelligence generated successfully for brand=%s", brand)
 
         # --- Prepare prompt ---

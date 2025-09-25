@@ -1,12 +1,12 @@
 from config import load_anthropic_api_config, load_open_ai_api_config
 from langchain.chat_models import init_chat_model
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 import os
 
 logger = setup_logger("LLMLoader")
 
 
-def load_llm_anthropic():
+def load_llm_anthorpic():
     try:
         logger.info("Loading Anthropic LLM...")
         config_files = load_anthropic_api_config()

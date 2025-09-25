@@ -2,7 +2,7 @@ from data_fetcher import DataReaderGT
 from data_intelligence import intelligence_maker_gt
 from llm import load_llm_anthorpic
 from pdf_saver import markdown_to_pdf
-from logging.logger import setup_logger
+from loging.logger import setup_logger
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 logger = setup_logger("TerritoryReportGenerator")
@@ -15,7 +15,7 @@ def invoke_llm_with_retry(llm, prompt):
     logger.info("LLM invocation successful")
     return result
 
-def territory_report_generator(territory: str, brand: str, prompt_path='prompts/gt/territory_analysis.md'):
+def territory_report_generator(territory: str, brand: str,category:str, prompt_path='prompts/gt/territory_analysis.md'):
     try:
         logger.info("Starting territory report generation for brand=%s, territory=%s", brand, territory)
 
@@ -27,7 +27,7 @@ def territory_report_generator(territory: str, brand: str, prompt_path='prompts/
         logger.info("Data fetched successfully for brand=%s, territory=%s", brand, territory)
 
         # --- Generate intelligence ---
-        intelligence = intelligence_maker_gt(rtm_data, gt_data_p, gt_data_comp, brand, territory)
+        intelligence = intelligence_maker_gt(rtm_data, gt_data_p, gt_data_comp, brand, category,territory)
         logger.info("Intelligence generated successfully")
 
         # --- Prepare prompt ---
