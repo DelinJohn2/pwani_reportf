@@ -41,7 +41,7 @@ class MTReportGenerator:
             logger.exception("Failed to fetch MT base data")
             raise
 
-    def generate_territory_report(self, territory: str, brand: str,category, prompt_path: str = "prompts/mt/territory_report.md") -> bytes:
+    def generate_territory_report(self, territory: str, brand: str, category, prompt_path: str = "prompts/mt/territory_report.md") -> bytes:
         """Generate a PDF report for a given brand in a territory."""
         try:
             pwani_data, competitor_data = self._get_base_data()

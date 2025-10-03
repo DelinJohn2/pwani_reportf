@@ -39,7 +39,7 @@ def new_columns(data: pd.DataFrame) -> pd.DataFrame:
         raise
 
 
-def intelligence_creator_mt(pwani_df: pd.DataFrame, comp_df: pd.DataFrame, brand: str, territory: str) -> dict:
+def intelligence_creator_mt(pwani_df: pd.DataFrame, comp_df: pd.DataFrame, brand: str, category, territory: str) -> dict:
     try:
         logger.info("Starting intelligence creation for brand=%s, territory=%s", brand, territory)
         pwani_df = pwani_df.copy()
@@ -57,7 +57,6 @@ def intelligence_creator_mt(pwani_df: pd.DataFrame, comp_df: pd.DataFrame, brand
             if brand_df["CATEGORY"].empty:
                 raise ValueError(f"No CATEGORY found for brand '{brand}'")
 
-            category = brand_df["CATEGORY"].iloc[0]
             internal_comp = pwani_df[(pwani_df["CATEGORY"] == category) & (pwani_df["BRAND"] != brand)]
             comp_df = comp_df[comp_df["CATEGORY"] == category]
 
