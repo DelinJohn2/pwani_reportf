@@ -1,36 +1,34 @@
 import pandas as pd
-from loging.logger import setup_logger
-
+from loging import setup_logger
 
 logger = setup_logger("IntelligenceMakerGT")
 
 
 
-def intelligence_maker_gt(rtm_data, gt_data, competitor_data, brand, category ,territory,threshold=0.05):
+def intelligence_maker_gt(rtm_data, gt_data, competitor_data, brand, category,territory ,threshold=0.05):
     try:
         logger.info("Generating intelligence for brand=%s, territory=%s", brand, territory)
 
         # --- RTM Filtering ---
-        rtm_filtered = rtm_data[rtm_data['BRAND'] == brand]
+        rtm_filtered = rtm_data[rtm_data['brand'] == brand]
         if territory.lower() != "all":
-            rtm_filtered = rtm_filtered[rtm_filtered['TERRITORY'] == territory]
+            rtm_filtered = rtm_filtered[rtm_filtered['territory'] == territory]
 
         filtered_rtm = (
             rtm_filtered
-            .groupby('SUB_COUNTY')
+            .groupby('subcounty')
             .agg(
-                brand=('BRAND', "first"),
-                average_white_space=('AWS_NEW', 'mean'),
-                total_qty_kg=('QTY_KG_RTM', 'sum'),
-                avg_norm_qty=('QTY_KG_RTM_NORM_BRANDWISE', 'mean'),
-                avg_region_share=('QTY_SHARE_REGION_BRAND', 'mean'),
-                avg_whitespace_score=('WHITE_SPACE_SCORE_TERRITORY', 'mean')
+                brand=('brand', "first"),
+                average_white_space=('aws', 'mean'),
+                total_qty_kg=('qtyKgRtm', 'sum'),
+                avg_volume=('volume', 'mean'),
+                avg_whitespace_score=('whiteSpaceScore', 'mean')
             )
             .reset_index()
         )
 
         # --- GT Filtering ---
-        gt_filtered = gt_data[gt_data['brandName'] == brand]
+        gt_filtered = gt_data[(gt_data['brandName'] == brand)& (gt_data['category']==category)]
         if territory.lower() != "all":
             gt_filtered = gt_filtered[gt_filtered['market'] == territory]
 

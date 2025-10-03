@@ -47,7 +47,7 @@ def mt_executive_summary(req: BrandRequest):
 def mt_territory_report(req: TerritoryRequest):
     try:
         logger.info("Generating MT territory report for brand=%s, territory=%s", req.brand, req.territory,req.category)
-        pdf_bytes = mt_report_gen.generate_territory_report(req.territory, req.brand)
+        pdf_bytes = mt_report_gen.generate_territory_report(req.territory, req.brand,req.category)
         logger.info("MT territory report generated successfully for brand=%s, territory=%s", req.brand, req.territory)
         return create_pdf_response(pdf_bytes, f"mt_territory_{req.territory}_{req.brand}")
     except Exception:
