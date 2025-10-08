@@ -43,15 +43,37 @@ class CampaignSchema(TypedDict):
     content_type: str
     language: str
     text_instructions: Optional[str] = Field(
-        """This is a prompt for a text LLM to generate the campaign. Instructions should be based on input data, aligned with the platform, and appropriate 
-        for the campaign type. Include all necessary details required for campaign generation."""
+        """This is a prompt for a text-based LLM to generate the campaign content.
+        The instructions should be based on the input data and reflect the correct tone and audience for the product category.
+        Make sure the style and message feel realistic and appropriate for that product.
+
+        Examples:
+        - Cooking oil: family warmth, healthy meals, everyday cooking joy.
+        - Laundry bar: freshness, cleanliness, family care.
+        - Toilet soap: luxury, self-care, comfort.
+        - Handwash: hygiene, protection, personal safety.
+
+        Never mention SKU, pack size, quantity, or bulk packaging.
+        Focus only on messaging that suits the market and campaign objective.
+        """
     )
+
     image_instructions: Optional[str] = Field(
-        """This is a prompt for an image LLM. Instructions should be highly specific and descriptive, considering the demographics of the territory. 
-        Focus on creating targeted marketing imagery to attract the audience and improve positioning and sales. 
-        Never mention bulk packaging; focus only on product placement in the market.
-        IMPORTANT RULE: Never mention SKU, pack size, or bulk packaging anywhere in your output. Do not include product weight, quantity, or packaging details. Only focus on marketing message, family context, and demographic targeting.
-"""
+        """This is a prompt for an image-generation LLM to create marketing visuals.
+        The imagery should be specific, appealing, and consistent with the product type and audience.
+        Always keep scenes realistic and brand-appropriate like if its luxury or economical.
+
+        Examples:
+        - Cooking oil: family cooking together or serving food.
+        - Laundry bar: a homemaker with clean, fresh clothes.
+        - Toilet soap: a woman in a bathrobe enjoying a private, luxurious bath.
+        - Handwash: hands being washed at a sink, showing freshness and hygiene.
+
+        IMPORTANT RULES:
+        - Never include SKU, pack size, weight, or bulk packaging.
+        - Do not show industrial, retail, or community settings.
+        - Focus on lifestyle, emotion, and placement relevant to the product.
+        """
     )
     demographics: Demographics
     history: Optional[str]
@@ -79,7 +101,7 @@ def llm_input_generator(territory: str, brand: str,category:str, prompt_path='pr
         logger.info("Data fetched successfully for brand=%s, territory=%s", brand, territory)
 
         # --- Generate intelligence ---
-        intelligence = intelligence_maker_gt(rtm_data, gt_data_p, gt_data_comp, brand, territory,category)
+        intelligence = intelligence_maker_gt(rtm_data, gt_data_p, gt_data_comp, brand, category,territory)
         logger.info("Intelligence generated successfully")
 
         # --- Prepare prompt ---
