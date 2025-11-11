@@ -5,6 +5,8 @@ from loging.logger import setup_logger  # make sure your logger module is correc
 logger = setup_logger("IntelligenceCreatorMT")
 
 
+
+
 def new_columns(data: pd.DataFrame) -> pd.DataFrame:
     try:
         logger.info("Starting feature engineering on data, shape=%s", data.shape)
@@ -39,7 +41,7 @@ def new_columns(data: pd.DataFrame) -> pd.DataFrame:
         raise
 
 
-def intelligence_creator_mt(pwani_df: pd.DataFrame, comp_df: pd.DataFrame, brand: str, category, territory: str) -> dict:
+def intelligence_creator_mt(pwani_df: pd.DataFrame, comp_df: pd.DataFrame, brand: str,category:str, territory: str) -> dict:
     try:
         logger.info("Starting intelligence creation for brand=%s, territory=%s", brand, territory)
         pwani_df = pwani_df.copy()
@@ -50,7 +52,7 @@ def intelligence_creator_mt(pwani_df: pd.DataFrame, comp_df: pd.DataFrame, brand
         pwani_df["stores"] = pwani_df["MT_PARTNER"].astype(str) + "_" + pwani_df["BRANCH"].astype(str)
 
         if territory.lower() == "all":
-            brand_df = pwani_df[pwani_df["BRAND"] == brand]
+            brand_df = pwani_df[(pwani_df["BRAND"] == brand) & (pwani_df['CATEGORY']==category)]
             if brand_df.empty:
                 raise ValueError(f"Brand '{brand}' not found in data")
 
@@ -87,14 +89,17 @@ def intelligence_creator_mt(pwani_df: pd.DataFrame, comp_df: pd.DataFrame, brand
 
         analysis = MtAnalysis()
         logger.info("MtAnalysis instance created successfully")
+        print(pwani_data.columns)
+        print(internal_comp.columns)
+        print(comp_data.columns)
 
         result = {
             "brand_name": brand,
             "territory": territory,
             "category": category,
-            "overall_conclusion": analysis.overall_conclusion(pwani_data),
-            "internal_competition": analysis.internal_comp_md(internal_comp),
-            "external_competition": analysis.competitor_data_md(comp_data),
+            "overall_conclusion": analysis.overall_conclusion(pwani_data,internal_comp,comp_data),
+            "internal_competition": analysis.internal_comp_md(internal_comp,pwani_data,comp_data),
+            "external_competition": analysis.competitor_data_md(comp_data,pwani_data,internal_comp),
             "target_partner": analysis.partner_analysis_md(pwani_data),
             "internal_partner": analysis.partner_analysis_md(internal_comp),
             "external_partner": analysis.partner_analysis_md(comp_data),
