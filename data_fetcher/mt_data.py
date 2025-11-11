@@ -1,8 +1,7 @@
 import pandas as pd
 from config import load_engine
 from sqlmodel import create_engine
-from loging.logger import setup_logger
-
+from loging import setup_logger   # 👈 adjust import path
 
 
 # --- DB Engine ---
@@ -52,26 +51,37 @@ class DataReaderMt:
             "price": "PRICE"
         }
 
-    def read_mt_pwani_data(self):
-        query = "SELECT * FROM pwani_marketing.mt_pwani_data_cleaned"
-        try:
-            logger.info("Fetching MT Pwani data...")
-            data = pd.read_sql_query(query, engine)
-            data = data.rename(columns=self.pwani_rename_map)
-            logger.info("Fetched %d rows from mt_pwani_data_cleaned", len(data))
-            return data
-        except Exception:
-            logger.exception("Error reading MT Pwani data")
-            raise
+def read_mt_pwani_data(self):
+    # Change `date` to the correct date column if needed
+    query = """
+        SELECT *
+        FROM pwani_marketing.mt_pwani_data_cleaned
+        WHERE date >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+    """
+    try:
+        logger.info("Fetching MT Pwani data (last 12 months)...")
+        data = pd.read_sql_query(query, engine)
+        data = data.rename(columns=self.pwani_rename_map)
+        logger.info("Fetched %d rows from mt_pwani_data_cleaned (12M window)", len(data))
+        return data
+    except Exception:
+        logger.exception("Error reading MT Pwani data")
+        raise
 
-    def read_mt_competitor_data(self):
-        query = "SELECT * FROM pwani_marketing.mt_competitor_data_cleaned"
-        try:
-            logger.info("Fetching MT Competitor data...")
-            df = pd.read_sql_query(query, engine)
-            df = df.rename(columns=self.competitor_rename_map)
-            logger.info("Fetched %d rows from mt_competitor_data_cleaned", len(df))
-            return df
-        except Exception:
-            logger.exception("Error reading MT Competitor data")
-            raise
+
+def read_mt_competitor_data(self):
+    # Change `date` to the correct date column if needed
+    query = """
+        SELECT *
+        FROM pwani_marketing.mt_competitor_data_cleaned
+        WHERE date >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+    """
+    try:
+        logger.info("Fetching MT Competitor data (last 12 months)...")
+        df = pd.read_sql_query(query, engine)
+        df = df.rename(columns=self.competitor_rename_map)
+        logger.info("Fetched %d rows from mt_competitor_data_cleaned (12M window)", len(df))
+        return df
+    except Exception:
+        logger.exception("Error reading MT Competitor data")
+        raise
